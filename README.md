@@ -5,7 +5,7 @@ This repository contains a quantitative data processing pipeline and exploratory
 
 ### Research Title & Context
 - **Research Title:** *Trajetórias escolares dos beneficiários do Programa Bolsa Família egressos do ensino médio das escolas públicas estaduais do município de Amparo (SP)*.
-- **Bolsa Família Program (PBF) Focus:** The study investigates the impact of PBF educational conditionalities—specifically mandatory school attendance—on secondary school completion among low-income students in Amparo (SP)[cite: 2]. It explores how the PBF provides immediate poverty relief while examining the structural limits of conditional cash transfers when youth face the financial necessity of entering the labor market, impacting their transitions to higher education and ex-post social mobility[cite: 2].
+- **Bolsa Família Program (PBF) Focus:** The study investigates the impact of PBF educational conditionalities—specifically mandatory school attendance—on secondary school completion among low-income students in Amparo (SP). It explores how the PBF provides immediate poverty relief while examining the structural limits of conditional cash transfers when youth face the financial necessity of entering the labor market, impacting their transitions to higher education and ex-post social mobility[cite: 2].
 
 ## Methodological Architecture
 - **Data Wrangling & Cleaning:** Ingestion of relational survey data via `readxl` and data transformation using `tidyverse` (`dplyr`).
