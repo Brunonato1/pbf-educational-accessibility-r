@@ -5,7 +5,7 @@ This repository contains a quantitative data processing pipeline and exploratory
 
 ### Research Title & Context
 - **Research Title:** *Trajetórias escolares dos beneficiários do Programa Bolsa Família egressos do ensino médio das escolas públicas estaduais do município de Amparo (SP)*.
-- **Bolsa Família Program (PBF) Focus:** The study investigates the impact of PBF educational conditionalities—specifically mandatory school attendance—on secondary school completion among low-income students in Amparo (SP). It explores how the PBF provides immediate poverty relief while examining the structural limits of conditional cash transfers when youth face the financial necessity of entering the labor market, impacting their transitions to higher education and ex-post social mobility[cite: 2].
+- **Bolsa Família Program (PBF) Focus:** The study investigates the impact of PBF educational conditionalities—specifically mandatory school attendance—on secondary school completion among low-income students in Amparo (SP). It explores how the PBF provides immediate poverty relief while examining the structural limits of conditional cash transfers when youth face the financial necessity of entering the labor market, impacting their transitions to higher education and ex-post social mobility.
 
 ## Methodological Architecture
 - **Data Wrangling & Cleaning:** Ingestion of relational survey data via `readxl` and data transformation using `tidyverse` (`dplyr`).
@@ -17,7 +17,8 @@ This repository contains a quantitative data processing pipeline and exploratory
 1. **Educational Access Funnel:** Identifies structural drop-off points along the educational path.
 2. **Fisher's Exact Test:** Evaluates association between information access and higher education aspirations.
 3. **Bivariate Visualizations:** Cross-examines race/ethnicity against perceptions of exam preparation.
-4. ## Visualizations
+
+## Visualizations
 
 ![University Access Funnel](sheet%20access.jpg)
 
@@ -26,4 +27,5 @@ This repository contains a quantitative data processing pipeline and exploratory
 ## Repository Structure
 - `analise (1).R`: Core R script containing data pipeline, statistical tests, and plot rendering.
 - `Base_Questionario_PortfolioDashboard.xlsx`: Anonymized primary survey dataset.
-- `figures/`: High-resolution graphics generated from the analysis.
+- `sheet access.jpg`: High-resolution graphic for the University Access Funnel.
+- `sheet race.jpg`: High-resolution graphic for ENEM Preparation Perception by Race/Ethnicity.
