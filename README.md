@@ -17,6 +17,11 @@ This repository contains a quantitative data processing pipeline and exploratory
 1. **Educational Access Funnel:** Identifies structural drop-off points along the educational path.
 2. **Fisher's Exact Test:** Evaluates association between information access and higher education aspirations.
 3. **Bivariate Visualizations:** Cross-examines race/ethnicity against perceptions of exam preparation.
+4. ## Visualizations
+
+![University Access Funnel](sheet%20access.jpg)
+
+![ENEM Preparation Perception](sheet%20race.jpg)
 
 ## Repository Structure
 - `analise (1).R`: Core R script containing data pipeline, statistical tests, and plot rendering.
