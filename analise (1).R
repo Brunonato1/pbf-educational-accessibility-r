@@ -1,96 +1,97 @@
 # ============================================
-# Análise dos dados da pesquisa PBF - PUC-Campinas
+# Analysis of PBF Survey Data - PUC-Campinas
 # ============================================
 
-# 1) Carregar os pacotes (igual "import pandas as pd" no Python)
-library(tidyverse)  # inclui dplyr (manipulação) e ggplot2 (gráficos)
-library(readxl)      # leitor de Excel, igual pd.read_excel()
+# 1) Load packages (equivalent to "import pandas as pd" in Python)
+library(tidyverse)  # includes dplyr (data manipulation) and ggplot2 (visualization)
+library(readxl)     # Excel reader, equivalent to pd.read_excel()
 
-# 2) Ler a planilha
-# Em Python seria: df = pd.read_excel("arquivo.xlsx", sheet_name="Base_Dashboard")
-dados <- read_excel("Base_Questionario_PortfolioDashboard.xlsx",
-                     sheet = "Base_Dashboard")
+# 2) Read the spreadsheet
+# In Python: df = pd.read_excel("file.xlsx", sheet_name="Base_Dashboard")
+data <- read_excel("Base_Questionario_PortfolioDashboard.xlsx",
+                   sheet = "Base_Dashboard")
 
-# 3) Dar uma primeira olhada nos dados (igual df.head() e df.info())
-glimpse(dados)   # mostra colunas, tipos e primeiras linhas
-head(dados)      # mostra as 6 primeiras linhas
+# 3) First look at the data (equivalent to df.head() and df.info())
+glimpse(data)   # shows columns, data types, and first few rows
+head(data)      # shows the first 6 rows
 
-# 4) Filtrar só os respondentes REAIS
-# Em Python seria: dados_reais = dados[dados['Origem_do_dado'] == 'Real']
-dados_reais <- dados |> filter(Origem_do_dado == "Real")
+# 4) Filter for REAL respondents only
+# In Python: real_data = data[data['Data_Origin'] == 'Real']
+real_data <- data |> filter(Data_Origin == "Real")
 
-# Conferir se ficaram só 6 linhas
-nrow(dados_reais)  # deve mostrar 6
+# Verify that exactly 6 rows remain
+nrow(real_data)  # should return 6
 
-# 5) Estatística descritiva simples: frequências
-# Em Python seria: dados_reais['Gênero'].value_counts()
-dados_reais |> count(Gênero)
-dados_reais |> count(cor)
-dados_reais |> count(quer_fazer_faculdade)
+# 5) Simple descriptive statistics: frequency tables
+# In Python: real_data['Gender'].value_counts()
+real_data |> count(Gender)
+real_data |> count(Race_Ethnicity)
+real_data |> count(Wants_Higher_Education)
 
-# 6) Cruzamento de duas variáveis (tabela de contingência)
-# Em Python seria: pd.crosstab(dados_reais['quer_fazer_faculdade'], dados_reais['informado_sobre_existencia_de_universidade_publica'])
-tabela_cruzada <- dados_reais |>
-  count(quer_fazer_faculdade, informado_sobre_existencia_de_universidade_publica)
+# 6) Cross-tabulation of two variables (contingency table)
+# In Python: pd.crosstab(real_data['Wants_Higher_Education'], real_data['Informed_About_Public_Universities'])
+cross_tab <- real_data |>
+  count(Wants_Higher_Education, Informed_About_Public_Universities)
 
-print(tabela_cruzada)
+print(cross_tab)
 
-# 7) Recriar o funil de acesso (mesma lógica do Power BI, agora em código)
-funil <- tibble(
-  etapa = c("Total de respondentes reais",
-            "Sabem que existe universidade pública",
-            "Querem ou talvez queiram fazer faculdade",
-            "Fizeram o ENEM",
-            "Estão cursando faculdade"),
-  quantidade = c(
-    nrow(dados_reais),
-    sum(dados_reais$informado_sobre_existencia_de_universidade_publica == "Sim", na.rm = TRUE),
-    sum(dados_reais$quer_fazer_faculdade %in% c("Sim", "Talvez"), na.rm = TRUE),
-    sum(dados_reais$fez_enem == "Sim", na.rm = TRUE),
-    sum(dados_reais$faz_faculdade == "Sim", na.rm = TRUE)
+# 7) Recreate the access funnel (same logic as Power BI, now in code)
+funnel <- tibble(
+  stage = c("Total real respondents",
+            "Aware of public university existence",
+            "Want or might want to attend university",
+            "Took the ENEM exam",
+            "Currently enrolled in university"),
+  count = c(
+    nrow(real_data),
+    sum(real_data$Informed_About_Public_Universities == "Yes", na.rm = TRUE),
+    sum(real_data$Wants_Higher_Education %in% c("Yes", "Maybe"), na.rm = TRUE),
+    sum(real_data$Took_ENEM == "Yes", na.rm = TRUE),
+    sum(real_data$Attending_University == "Yes", na.rm = TRUE)
   )
 )
 
-print(funil)
+print(funnel)
 
-# 8) Um gráfico de barras simples (equivalente ao matplotlib/seaborn)
-ggplot(funil, aes(x = reorder(etapa, -quantidade), y = quantidade)) +
+# 8) Simple bar chart (equivalent to matplotlib/seaborn)
+ggplot(funnel, aes(x = reorder(stage, -count), y = count)) +
   geom_col(fill = "#1F3864") +
-  labs(title = "Funil de Acesso à Universidade (N = 6, dados reais)",
-       x = NULL, y = "Quantidade") +
+  labs(title = "Higher Education Access Funnel (N = 6, real data)",
+       x = NULL, y = "Count") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 30, hjust = 1))
 
 # ============================================
-# NOTA METODOLÓGICA
-# Com N = 6, estes resultados são exploratórios/descritivos,
-# não devem ser interpretados como estatisticamente representativos
-# ou generalizáveis para a população de beneficiários do PBF.
+# METHODOLOGICAL NOTE
+# With N = 6, these results are exploratory/descriptive
+# and should not be interpreted as statistically representative
+# or generalizable to the broader population of PBF recipients.
 # ============================================
+
 # ============================================
-# 9) ANÁLISE INFERENCIAL (Teste Exato de Fisher)
+# 9) INFERENTIAL ANALYSIS (Fisher's Exact Test)
 # ============================================
-tabela_cruzada_fisher <- table(
-  dados_reais$informado_sobre_existencia_de_universidade_publica,
-  dados_reais$quer_fazer_faculdade
+cross_tab_fisher <- table(
+  real_data$Informed_About_Public_Universities,
+  real_data$Wants_Higher_Education
 )
 
-teste_fisher <- fisher.test(tabela_cruzada_fisher)
-print(teste_fisher)
+fisher_test <- fisher.test(cross_tab_fisher)
+print(fisher_test)
 
 
 # ============================================
-# 10) VISUALIZAÇÃO AVANÇADA (Cruzamento Socioeconômico)
+# 10) ADVANCED VISUALIZATION (Socioeconomic Cross-Tabulation)
 # ============================================
-ggplot(dados_reais, aes(x = cor, fill = sentiuse_preparado_para_enem)) +
+ggplot(real_data, aes(x = Race_Ethnicity, fill = Felt_Prepared_For_ENEM)) +
   geom_bar(position = "dodge") +
-  scale_fill_manual(values = c("Não" = "#C00000", "Sim" = "#2F5597", "Não informado" = "#7F7F7F")) +
+  scale_fill_manual(values = c("No" = "#C00000", "Yes" = "#2F5597", "Not reported" = "#7F7F7F")) +
   labs(
-    title = "Percepção de Preparação para o ENEM por Cor/Raça",
-    subtitle = "Dados Reais da Pesquisa PBF (N = 6)",
-    x = "Cor / Raça",
-    y = "Quantidade de Respondentes",
-    fill = "Sentiu-se preparado?"
+    title = "Perception of ENEM Preparation by Race/Ethnicity",
+    subtitle = "Real PBF Survey Data (N = 6)",
+    x = "Race / Ethnicity",
+    y = "Number of Respondents",
+    fill = "Felt prepared?"
   ) +
   theme_minimal() +
   theme(
